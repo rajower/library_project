@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Library{% endblock %}</title>
+    <!-- Include your CSS and other head elements here -->
+</head>
+<body>
+    <header>
+        <h1>Your Library</h1>
+        <!-- Navigation Menu -->
+        <nav>
+            <ul>
+                <li><a href="{% url 'library:index' %}" class="btn btn-primary">Home</a></li>
+                <li><a href="{% url 'library:book_all' %}">Browse Books</a></li>
+                <li><a href="user_history.html">Your History</a></li>
+                <li><a href="{% url 'library:user_view' %}">Users</a></li>
+                <!-- Add more menu items as needed -->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Library. All rights reserved.</p>
+    </footer>
+</body>
+</html>

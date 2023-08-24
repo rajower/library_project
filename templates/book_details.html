@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Library - {{ book.title }}{% endblock %}
+
+{% block content %}
+    <section class="book-detail">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Genre</th>
+                    <th>Availability</th>
+                    <th>Author</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.genre.name }}</td>
+                        <td>{{ book.availability}}</td>
+                        <td>{{ book.author }}</td>
+                    </tr>
+            </tbody>
+        </table>
+    </section>
+    <a href="{% url 'library:book_all' %}"  class="btn btn-primary">Back to Book List</a>
+{% endblock %}

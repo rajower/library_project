@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+    <section class="book-list">
+    <h2>Book List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+                {% if not book.deleted %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td><a href="{% url 'library:book_details' book_id=book.pk %}">
+                        More Details
+                    </a></td>
+                    <td><a href="{% url 'library:delete_book' book_id=book.book_id %}"
+                        onclick="return confirm('Are you sure you want to delete this book?');"
+                        >Delete</a></td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}
+
+
+
+
