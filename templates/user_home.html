@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Library - Home{% endblock %}
+
+{% block content %}
+<section class="jumbotron">
+    {% if user.is_authenticated %}
+    <p>Welcome, {{ user.name }}!</p>
+    <a href="{% url 'library:logout' %}">Logout</a>
+{% else %}
+    <a href="{% url 'library:login' %}">Login</a> |
+    <a href="{% url 'library:register' %}">Register</a>
+{% endif %}
+    <p>Explore our collection of books and resources.</p>
+</section>
+<section>
+    <main>
+        <!-- Page-specific content goes here -->
+        <h2>We're here for you</h2>
+        <p>You'll be able to see what our books, what we have available and what you have borrowed</p>
+        <p><i>"I have always imagined that Paradise will be a kind of a Library."</i>
+            <br><strong>-Jorge Luis Borges</strong> </p>
+    </main>
+    
+</section>
+{% endblock %}

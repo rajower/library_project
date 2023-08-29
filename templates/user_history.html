@@ -1,28 +1,10 @@
 {% extends 'base.html' %}
-{% block title %}User Borrowing History{% endblock %}
 
 {% block content %}
-<section class="user-history">
-    <h2>User Borrowing History</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Book Title</th>
-                <th>Borrowed Date</th>
-                <th>Due Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for borrowing in user_borrowings %}
-                <tr>
-                    <td>{{ borrowing.user.name }}</td>
-                    <td>{{ borrowing.book.title }}</td>
-                    <td>{{ borrowing.date }}</td>
-                    <td>{{ borrowing.due_date }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</section>
+    <h1>{{ user.name }}'s Borrowing History</h1>
+    <ul>
+        {% for borrowing in user_borrowings %}
+            <li>{{ borrowing.book.title }} ({{ borrowing.date }} {{borrowing.due_date}})</li>
+        {% endfor %}
+    </ul>
 {% endblock %}

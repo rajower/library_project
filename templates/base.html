@@ -13,9 +13,16 @@
         <nav>
             <ul>
                 <li><a href="{% url 'library:index' %}" class="btn btn-primary">Home</a></li>
+                {% if user.is_admin %}
+                    <li><a href="{% url 'library:admin_dashboard' %}">Admin Dashboard</a></li>
+                {% endif %}
                 <li><a href="{% url 'library:book_all' %}">Browse Books</a></li>
+                {% if user.is_user %}
                 <li><a href="user_history.html">Your History</a></li>
+                {% endif %}
+                {% if user.is_admin %}
                 <li><a href="{% url 'library:user_view' %}">Users</a></li>
+                {% endif %}
                 <!-- Add more menu items as needed -->
             </ul>
         </nav>
