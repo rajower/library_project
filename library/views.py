@@ -1,9 +1,11 @@
 from django.contrib.auth import login
+from django.contrib.auth.models import User 
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
 from .models import Book, Borrowing
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from .forms import NewUserForm
 from django.contrib import messages
 
@@ -47,31 +49,21 @@ def delete_user(user_id):
     user.save()
     return redirect('library:user_view')
 
-def add_user(request):
-    if request.method == 'POST':
-        name = request.POST['name']
-        email = request.POST['email']
-        User.objects.create(name=name, email=email)
-        return redirect('library:user_view')
-    return render(request, 'add_user.html')
-
 #History
 def user_history(request, user_id):
     user_borrowings = Borrowing.objects.filter(user_id=user_id)
     return render(request, 'user_history.html', {'user_borrowings': user_borrowings})
 
-@login_required(login_url='library:login')
+def admin_dashboard(request):
+    return render(request, 'admin_dashboard.html')
+
 def user_home(request):
-    # Your user home view logic here
     return render(request, 'user_home.html')
 
-def is_admin(user):
-    return user.is_authenticated and user.user_type == 'admin'
+class CustomLoginView(LoginView):
+    template_name = 'registration/login.html'
+    success_url = reverse_lazy('library:user_home')
 
-@user_passes_test(is_admin, login_url='library:login')
-def admin_dashboard(request):
-    # Your admin dashboard view logic here
-    return render(request, 'admin_dashboard.html')
 
 def register_request(request):
 	if request.method == "POST":
@@ -80,7 +72,7 @@ def register_request(request):
 			user = form.save()
 			login(request, user)
 			messages.success(request, "Registration successful." )
-			return redirect("main:homepage")
+			return redirect("library:login")
 		messages.error(request, "Unsuccessful registration. Invalid information.")
 	form = NewUserForm()
 	return render (request=request, template_name="registration/register.html", context={"register_form":form})

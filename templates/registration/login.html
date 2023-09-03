@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Your head content here -->
+</head>
+<body>
+    <h1>Login</h1>
+    <form method="post" action="{% url 'library:login' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+    <a href="{% url 'library:register' %}">Don't have an account? Register here</a>
+</body>
+</html>

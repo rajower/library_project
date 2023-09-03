@@ -5,8 +5,7 @@
 {% block content %}
 <section class="jumbotron">
     {% if user.is_authenticated %}
-    <p>Welcome, {{ user.name }}!</p>
-    <a href="{% url 'library:logout' %}">Logout</a>
+    <p>Welcome, {{ user.first_name }}!</p>
 {% else %}
     <a href="{% url 'library:login' %}">Login</a> |
     <a href="{% url 'library:register' %}">Register</a>
