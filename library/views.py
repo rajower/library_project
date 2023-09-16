@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import NewUserForm
 from django.contrib import messages
+from .forms import EditUserForm
 
 
 #index page
@@ -29,36 +30,60 @@ def book_details(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     return render(request, 'book_details.html', {'book': book})
 
+@login_required
+def borrow_book(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    if book.availability:
+        borrowing = Borrowing(id=request.user, book=book, details=f"Borrowed {book.title}")
+        borrowing.save()
+        book.availability = False
+        book.save()
+        messages.success(request, f"You have successfully borrowed {book.title}.")
+        return redirect('library:user_history', user_id=request.user.id)
+    else:
+        messages.error(request, "This book is not available for borrowing.")
+        return redirect('library:book_details', book_id=book_id)
+    
+
 #users  
 def user_list(request):
     users = User.objects.all()
     return render(request, 'users.html', {'users': users})
 
+
 def edit_user(request, user_id):
-    user = get_object_or_404(User, user_id=user_id)
+    user = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
-        user.name = request.POST.get('name')
-        user.email = request.POST.get('email')
-        user.save()
-        return redirect('library:user_view')
-    return render(request, 'users/edit_user.html', {'user': user})
+        form = EditUserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('library:user_view')
+    else:
+        form = EditUserForm(instance=user)
+
+    return render(request, 'edit_user.html', {'form': form, 'user': user})
+
 
 def delete_user(user_id):
-    user = get_object_or_404(User, user_id=user_id)
+    user = get_object_or_404(User, id=user_id)
     user.deleted = True
     user.save()
     return redirect('library:user_view')
 
 #History
+@login_required
 def user_history(request, user_id):
-    user_borrowings = Borrowing.objects.filter(user_id=user_id)
-    return render(request, 'user_history.html', {'user_borrowings': user_borrowings})
+    selected_user = get_object_or_404(User, id=user_id)
+    user_borrowings = Borrowing.objects.filter(id=user_id)
+    return render(request, 'user_history.html', {'selected_user': selected_user, 'user_borrowings': user_borrowings})
+
 
 def admin_dashboard(request):
     return render(request, 'admin_dashboard.html')
 
 def user_home(request):
     return render(request, 'user_home.html')
+
 
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'

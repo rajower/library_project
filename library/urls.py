@@ -15,6 +15,7 @@ urlpatterns = [
     path('books/<int:book_id>/delete/', views.delete_book, name='delete_book'),
     path('users/<int:user_id>/history/', views.user_history, name='user_history'),
     path('login/', views.CustomLoginView.as_view(), name='login'),  # Add the login URL here
-    path('register/', views.register_request, name='register'),  # Add the registration URL here
+    path('register/', views.register_request, name='register'), 
+    path('books/<int:book_id>/borrow/', views.borrow_book, name='borrow_book'),
     # Other app-specific URLs
 ]

@@ -12,14 +12,12 @@
         <!-- Navigation Menu -->
         <nav>
             <ul>
-                <li><a href="{% url 'library:index' %}" class="btn btn-primary">Home</a></li>
+                <li><a href="{% url 'library:user_home' %}" class="btn btn-primary">Home</a></li>
                 {% if user.is_staff %}
                 <li><a href="{% url 'library:admin_dashboard' %}">Admin Dashboard</a></li>
                 {% endif %}
                 <li><a href="{% url 'library:book_all' %}">Browse Books</a></li>
-                {% if user.is_user %}
-                <li><a href="user_history.html">Your History</a></li>
-                {% endif %}
+                <li><a href="{% url 'library:user_history' user_id=user.id %}">Your History</a></li>
                 {% if user.is_staff%}
                 <li><a href="{% url 'library:user_list' %}">Users</a></li>
                 {% endif %}

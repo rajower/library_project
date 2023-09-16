@@ -28,7 +28,7 @@ class Book(models.Model):
 
 class Borrowing(models.Model):
     borrowing_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    id = models.ForeignKey(User, on_delete=models.CASCADE, db_column='id')
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     details = models.TextField()
     date = models.DateField(auto_now_add=True)

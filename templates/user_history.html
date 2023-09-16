@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{{ user.name }}'s Borrowing History</h1>
-    <ul>
-        {% for borrowing in user_borrowings %}
-            <li>{{ borrowing.book.title }} ({{ borrowing.date }} {{borrowing.due_date}})</li>
-        {% endfor %}
-    </ul>
+    <h1>{{ selected_user.first_name }}'s Borrowing History</h1>
+    {% if user_borrowings %}
+        <ul>
+            {% for borrowing in user_borrowings %}
+                <li>{{ borrowing.book.title }}, (<strong>Borrowing Date:</strong>{{ borrowing.date }} - <strong>Due Date:</strong>{{ borrowing.due_date }})</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h3>No Books Borrowed</h3>
+    {% endif %}
 {% endblock %}

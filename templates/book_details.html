@@ -11,6 +11,10 @@
                     <th>Genre</th>
                     <th>Availability</th>
                     <th>Author</th>
+                    {% if user.is_authenticated %}
+                    <th><a href="{% url 'library:borrow_book' book_id=book.pk %}">Borrow This Book</a></th> 
+                    {% endif %}
+
                 </tr>
             </thead>
             <tbody>
