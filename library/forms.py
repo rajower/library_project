@@ -21,8 +21,28 @@ class NewUserForm(UserCreationForm):
         return user
 
 class EditUserForm(forms.ModelForm):
+    # Define choices for the user type dropdown
+    USER_TYPE_CHOICES = (
+        ('user', 'User'),
+        ('staff', 'Staff'),
+        ('superuser', 'Superuser'),
+    )
+
+    # Add a field for user type using ChoiceField
+    user_type = forms.ChoiceField(choices=USER_TYPE_CHOICES, required=False)
+
     class Meta:
         model = User
         fields = ("first_name", "last_name", "username", "email")
+
+    def __init__(self, *args, **kwargs):
+        super(EditUserForm, self).__init__(*args, **kwargs)
         
+        # Set the initial value of the user type based on the user's current status
+        if self.instance.is_superuser:
+            self.initial['user_type'] = 'superuser'
+        elif self.instance.is_staff:
+            self.initial['user_type'] = 'staff'
+        else:
+            self.initial['user_type'] = 'user'
 

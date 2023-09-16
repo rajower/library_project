@@ -52,16 +52,31 @@ def user_list(request):
 
 
 def edit_user(request, user_id):
-    user = get_object_or_404(User, id=user_id)
+    user = get_object_or_404(User, pk=user_id)
+
     if request.method == 'POST':
         form = EditUserForm(request.POST, instance=user)
         if form.is_valid():
+            # Save the user type based on the selected choice
+            user_type = form.cleaned_data.get('user_type')
+            if user_type == 'superuser':
+                user.is_superuser = True
+                user.is_staff = True
+            elif user_type == 'staff':
+                user.is_superuser = False
+                user.is_staff = True
+            else:
+                user.is_superuser = False
+                user.is_staff = False
+
+            # Save the other form fields
             form.save()
-            return redirect('library:user_view')
+
+            return redirect('library:user_list')
     else:
         form = EditUserForm(instance=user)
 
-    return render(request, 'edit_user.html', {'form': form, 'user': user})
+    return render(request, 'edit_user.html', {'form': form, 'user_id': user_id})
 
 
 def delete_user(user_id):

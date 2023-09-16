@@ -8,15 +8,29 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Username</th>
                 <th>Email</th>
+                <th>Last Login</th>
+                <th>Type</th>
             </tr>
         </thead>
         <tbody>
             {% for user in users %}
                 {% if not user.deleted %}
                 <tr>
-                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                    <td>{{ user.username }}</td>
                     <td>{{ user.email }}</td>
+                    <td>{{ user.last_login }}</td>
+                    <td>
+                        {% if user.is_superuser %}
+                            Superuser
+                        {% elif user.is_staff %}
+                            Staff
+                        {% else %}
+                            User
+                        {% endif %}
+                    </td>
                     <td><a href="{% url 'library:user_history' user_id=user.id %}">View History</a></td>
                     <td><a href="{% url 'library:edit_user' user_id=user.id %}">Edit</a></td>
                     <td><a href="{% url 'library:delete_user' user_id=user.id %}"
