@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views
 
 app_name = 'library'
 
@@ -15,7 +16,12 @@ urlpatterns = [
     path('books/<int:book_id>/delete/', views.delete_book, name='delete_book'),
     path('users/<int:user_id>/history/', views.user_history, name='user_history'),
     path('login/', views.CustomLoginView.as_view(), name='login'),  # Add the login URL here
+    path('logout/', auth_views.LogoutView.as_view(next_page='library:index'), name='logout'),
     path('register/', views.register_request, name='register'), 
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('books/<int:book_id>/borrow/', views.borrow_book, name='borrow_book'),
     # Other app-specific URLs
 ]

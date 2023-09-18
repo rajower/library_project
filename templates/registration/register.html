@@ -2,16 +2,27 @@
 <html>
 {% block content %} 
 
-<!--Register--> 
+<!-- Register --> 
 <div class="container py-5">
-	<h1>Register</h1>
-	<form method="POST">
-		{% csrf_token %}
-		{{ register_form}}                    
-		<button class="btn btn-primary" type="submit">Register</button>
-	</form>
-	<p class="text-center">If you already have an account, <a href="/library:login">login</a> instead.</p>
+    <h1>Register</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ register_form }}                    
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+	{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <p class="alert {% if message.tags == 'error' %}error{% else %}success{% endif %}">
+                {{ message }}
+            </p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+    <p class="text-center">If you already have an account, <a href="{% url 'library:login' %}">login</a> instead.</p>
 </div>
 
 {% endblock %}
 </html>
+
