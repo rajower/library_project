@@ -17,9 +17,9 @@
                         More Details
                     </a></td>
                     {% if user.is_staff %}
-                    <td><a href="{% url 'library:delete_book' book_id=book.book_id %}"
+                    <td><a href="{% url 'library:delete_book' book.pk %}"
                         onclick="return confirm('Are you sure you want to delete this book?');"
-                        >Delete</a></td>
+                        >Delete</a></td>                                     
                     {% endif %}
                 </tr>
                 {% endif %}

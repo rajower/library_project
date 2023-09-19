@@ -21,11 +21,12 @@ def book_all(request):
     books = Book.objects.all()  # Query all books from the database
     return render(request,'books.html', {'books': books}) 
 
-def delete_book (book_id):
-    book=get_object_or_404(Book, book_id=book_id)
+def delete_book(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
     book.deleted = True
     book.save()
     return redirect('library:book_all')
+
 
 def book_details(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
@@ -48,7 +49,7 @@ def borrow_book(request, book_id):
 
 #users  
 def user_list(request):
-    users = User.objects.all()
+    users = User.objects.filter(is_active=True)  # Exclude the logged-in user
     return render(request, 'users.html', {'users': users})
 
 
@@ -80,11 +81,11 @@ def edit_user(request, user_id):
     return render(request, 'edit_user.html', {'form': form, 'user_id': user_id})
 
 
-def delete_user(user_id):
+def delete_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
-    user.deleted = True
+    user.is_active = False
     user.save()
-    return redirect('library:user_view')
+    return redirect('library:user_list')
 
 #History
 @login_required
