@@ -4,5 +4,23 @@
 {% block content %}
 <h1>Hello, {{ user.first_name }}!</h1>
 <p>This is your admin dashboard.</p>
-
+<h2>Books Due </h2>
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>User</th>
+            <th>Due Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books_due_within_week %}
+        <tr>
+            <td>{{ book.book.title }}</td>
+            <td>{{ book.id.first_name }} {{ book.id.last_name }}</td>
+            <td>{{ book.due_date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

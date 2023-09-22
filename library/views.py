@@ -1,16 +1,18 @@
 from django.contrib.auth import login
+from .forms import EditUserForm, ContactForm, NewUserForm
 from django.contrib.auth.models import User 
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
+from datetime import datetime, timedelta
 from .models import Book, Borrowing
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import NewUserForm
 from django.contrib import messages
 from django.contrib.messages import success
-from .forms import EditUserForm
-
+from django.core.mail import send_mail, BadHeaderError
+from django.conf import settings
+from django.http import HttpResponse
 
 #index page
 def index_view(request):
@@ -96,7 +98,16 @@ def user_history(request, user_id):
 
 
 def admin_dashboard(request):
-    return render(request, 'admin_dashboard.html')
+    # Get the current date
+    current_date = datetime.now().date()
+
+    # Calculate the date one week from now
+    one_week_from_now = current_date + timedelta(days=7)
+
+    # Query for books that are due within a week
+    books_due_within_week = Borrowing.objects.filter(due_date__lte=one_week_from_now)
+
+    return render(request, 'admin_dashboard.html', {'books_due_within_week': books_due_within_week})
 
 def user_home(request):
     return render(request, 'user_home.html')
@@ -120,3 +131,28 @@ def register_request(request):
     
     form = NewUserForm()
     return render(request=request, template_name="registration/register.html", context={"register_form": form})
+
+#contact us form 
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = "Website Inquiry" 
+            body = {
+                'first_name': form.cleaned_data['first_name'], 
+                'last_name': form.cleaned_data['last_name'], 
+                'email': form.cleaned_data['email_address'],
+                'message': form.cleaned_data['message'], 
+            }
+            message = "\n".join([f"{key}: {value}" for key, value in body.items()])
+
+            try:
+                send_mail(subject, message, 'neveamore77@gmail.com', ['neveamore77@gmail.com'])
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+
+            messages.success(request, "Email Sent! We will be in touch")
+            
+      
+    form = ContactForm()
+    return render(request, 'contact.html', {'form': form})

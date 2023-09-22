@@ -23,5 +23,7 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('books/<int:book_id>/borrow/', views.borrow_book, name='borrow_book'),
+    path("contact", views.contact, name='contact'),
+    path('success/',views.success, name='success'),
     # Other app-specific URLs
 ]

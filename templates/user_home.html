@@ -1,26 +1,31 @@
 {% extends 'base.html' %}
+{% load static %}  <!-- Load static files for custom CSS if needed -->
 
 {% block title %}Library - Home{% endblock %}
 
 {% block content %}
-<section class="jumbotron">
+<section class="jumbotron text-center">
     {% if user.is_authenticated %}
-    <p>Welcome, {{ user.first_name }}!</p>
-{% else %}
-    <a href="{% url 'library:login' %}">Login</a> |
-    <a href="{% url 'library:register' %}">Register</a>
-{% endif %}
-    <p>Explore our collection of books and resources.</p>
+    <h1>Welcome, {{ user.first_name }}!</h1>
+    {% else %}
+    <h1>Welcome to Our Library</h1>
+    <p>Not a member yet? <a href="{% url 'library:register' %}">Register Now</a></p>
+    {% endif %}
+    <p class="lead">Explore our collection of books and resources.</p>
 </section>
-<section>
-    <main>
-        <!-- Page-specific content goes here -->
-        <h2>We're here for you</h2>
-        <p>You'll be able to see all of our books, your borrowing history and you can even borrow a book and pick it up here!</p>
-        <p><i>"I have always imagined that Paradise will be a kind of a Library."</i>
-            <br><strong>-Jorge Luis Borges</strong> </p>
-        <h3>Contact us</h3>
-    </main>
-    
+
+<section class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>We're here for you</h2>
+            <p class="text-justify">You'll find a wide selection of books, access your borrowing history, and even borrow books online.</p>
+            <p class="text-center"><em>"I have always imagined that Paradise will be a kind of a Library."</em></p>
+            <p class="text-center"><strong>- Jorge Luis Borges</strong></p>
+        </div>
+        <div class="col-md-6">
+            <h2>Contact Us</h2>
+            <p>If you have any questions or need assistance, don't hesitate to <a href="{% url 'library:contact' %}">contact us</a>.</p>
+        </div>
+    </div>
 </section>
 {% endblock %}
