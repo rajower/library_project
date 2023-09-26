@@ -144,5 +144,5 @@ EMAIL_HOST = 'smtp.gmail.com'  # This is the SMTP server for Gmail
 EMAIL_PORT = 587  # The SMTP server's port for secure connections
 EMAIL_USE_TLS = True 
 EMAIL_HOST_USER = 'neveamore77@gmail.com'
-EMAIL_HOST_PASSWORD = 'ajfw jbvh ryrm clcp'
+EMAIL_HOST_PASSWORD = '$$'
 
